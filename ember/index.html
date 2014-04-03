@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Ember Starter Kit</title>
+		<link rel="stylesheet" href="../shared/css/lib/bootstrap.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+
+		<script type="text/x-handlebars">
+
+			<nav class="navbar navbar-default" role="navigation">
+				<div class="container-fluid">
+				  <div class="navbar-header">
+				    <a class="navbar-brand" href="#">App</a>
+				  </div>
+
+				  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				    <ul class="nav navbar-nav">
+				      <li>
+				      	{{#link-to 'index'}}
+									Home
+								{{/link-to}}
+							</li>
+				      <li>
+				      	{{#link-to 'accounts'}}
+									Accounts
+								{{/link-to}}
+				      </li>
+				    </ul>
+				  </div>
+				</div>
+			</nav>
+
+
+			{{outlet}}
+		</script>
+
+		<script type="text/x-handlebars" id="index">
+			<h2>Welcome</h2>
+		</script>
+
+		<script type="text/x-handlebars" id="accounts">
+			<h2>Accounts</h2>
+			<hr />
+			<div class='col-sm-3'>
+				<div class='list-group'>
+
+					{{#link-to 'accounts' classNames='list-group-item'}}
+						Overview
+					{{/link-to}}
+
+					{{#each}}
+						{{#link-to 'account' this classNames='list-group-item'}}
+							{{label}}
+						{{/link-to}}
+					{{/each}}
+
+				</div>
+			</div>
+			<div class='col-sm-9'>
+				{{outlet}}
+			</div>
+		</script>
+
+		<script type="text/x-handlebars" id="accounts/index">
+			<h3>Overview</h3>
+			<p>There are {{length}} accounts</p>
+			<ul>
+				{{#each}}
+					<li>{{label}}</li>
+				{{/each}}
+			</ul>
+		</script>
+
+		<script type='text/x-handlebars' data-template-name='account'>
+			<div class='row'>
+				<div class='col-sm-7'>
+					<h2>{{label}}</h2>
+					<p>Balance: {{balance}}</p>
+
+
+					<h3>Transactions ({{transactions.length}})</h3>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Credit</th>
+								<th>Debit</th>
+							</tr>
+						</thead>
+						<tbody>
+							{{#each transactions}}
+								<tr>
+									<td>{{id}}</td>
+									<td>{{credit}}</td>
+									<td>{{debit}}</td>
+								</tr>
+							{{/each}}
+						</tbody>
+					</table>
+
+					{{outlet}}
+
+				</div>
+			</div>
+		</script>
+
+		<script src="js/libs/jquery-1.10.2.js"></script>
+		<script src="js/libs/handlebars-1.1.2.js"></script>
+		<script src="js/libs/ember-1.5.0.js"></script>
+		<script src='js/libs/ember-data.js'></script>
+	  <script src="js/app.js"></script>
+	  <!-- to activate the test runner, add the "?test" query string parameter -->
+	  <script src="tests/runner.js"></script>
+	</body>
+</html>
