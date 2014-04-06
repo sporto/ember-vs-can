@@ -79,10 +79,12 @@ APP.AccountControl = can.Control({
 	},
 
 	getAccountTransactions: function () {
+		var self = this;
 		var accountId = this.account.attr('id');
 		APP.Transaction.findAll({accountId: accountId})
 			.then(function (transactions) {
-				console.log(transactions)
+				// console.log(transactions);
+				self.account.attr('transactions', transactions);
 			}, function (xhr) {
 				console.log(xhr.responseText);
 			});
@@ -107,7 +109,6 @@ var accounts = [
 			id: 1,
 			label: 'John',
 			balance: 99,
-			transactions: [101, 102]
 		},
 		{
 			id: 2,
@@ -142,8 +143,6 @@ can.fixture("GET /accounts",function (){
 
 can.fixture('GET /accounts/{id}', function (request, response) {
 	var one = _.find(accounts, function (account) {
-		// console.log(account);
-		// console.log(request.data);
 		return account.id == request.data.id;
 	});
 	// console.log(one);
@@ -153,6 +152,15 @@ can.fixture('GET /accounts/{id}', function (request, response) {
 can.fixture('GET /accounts/{accountId}/transactions', function (request, response) {
 	console.log(request.data);
 	var accountId = +request.data.accountId;
+	return [{
+		id: 100,
+		credit: 100,
+		debit: 0
+	}, {
+		id: 101,
+		credit: 0,
+		debit: 100
+	}];
 });
 
 var app = new APP.MainControl($('body'));
