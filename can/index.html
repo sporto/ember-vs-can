@@ -46,6 +46,9 @@
 					{{#if state.loading}}
 						{{&loader}}
 					{{else}}
+						<a href="#!accounts" class="list-group-item">
+							Overview
+						</a>
 						{{#each accounts}}
 							<a href="#!accounts/{{id}}" class="list-group-item">
 								{{label}}
@@ -55,7 +58,19 @@
 				</div>
 			</div>
 			<div class='col-sm-9'>
-				<div class="accounts-outlet"></div>
+				<div class="accounts-outlet">
+					{{#if state.loading}}
+						{{&loader}}
+					{{else}}
+						<h3>Overview</h3>
+						<p>There are {{accounts.length}} accounts</p>
+						<ul>
+							{{#each accounts}}
+								<li>{{label}}</li>
+							{{/each}}
+						</ul>
+					{{/if}}
+				</div>
 			</div>
 		</script>
 

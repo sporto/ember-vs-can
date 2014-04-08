@@ -67,8 +67,6 @@ APP.AccountsControl = can.Control({
 APP.AccountControl = can.Control({
 	init: function (ele, options) {
 		var self = this;
-		// console.log('AccountControl::init');
-		// console.log('id', options.id);
 
 		this.account = new APP.Account({id: +options.id});
 		this.state = new can.Map({loading: true});
@@ -145,6 +143,8 @@ var accounts = [
 	    balance: 58,
 	  }
   ];
+
+can.fixture.delay = 200;
 
 can.fixture("GET /accounts",function (){
 	return accounts;

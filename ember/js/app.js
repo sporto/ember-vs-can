@@ -46,7 +46,7 @@ App.AccountsIndexRoute = Ember.Route.extend({
 // });
 
 // MODELS
-App.ApplicationAdapter = DS.FixtureAdapter.extend();
+App.ApplicationAdapter = DS.FixtureAdapter.extend({latency: 500});
 
 App.Account = DS.Model.extend({
 	label: DS.attr('string'),
