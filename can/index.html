@@ -50,7 +50,7 @@
 							Overview
 						</a>
 						{{#each accounts}}
-							<a href="#!accounts/{{id}}" class="list-group-item">
+							<a href="#!accounts/{{id}}" class="list-group-item {{#ifEqual route.id id}}active{{/ifEqual}}">
 								{{label}}
 							</a>
 						{{/each}}

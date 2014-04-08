@@ -4,6 +4,21 @@ Mustache.registerHelper('loader', function (compute, options) {
 	return "<span class='loader'><i class='fa fa-spinner fa-spin'></i></span>";
 });
 
+Mustache.registerHelper('ifEqual', function (val1, val2, options) {
+  if (_.isFunction(val1)) {
+    val1 = val1();
+  }
+  if (_.isFunction(val2)) {
+    val2 = val2();
+  }
+
+  if (val1 != val2) {
+    return options.inverse(this);
+  } else {
+    return options.fn(this);
+  }
+});
+
 APP.MainControl = can.Control({
 	init: function (ele, options) {
 		var view = can.view('t-main', {});
@@ -16,7 +31,7 @@ APP.MainControl = can.Control({
 	'accounts/:id route': 'showAccount',
 
 	showAccounts: function (data) {
-		console.log('showAccounts');
+		// console.log('showAccounts');
 		$el = $('<div>');
 		$('.app-outlet', this.element).html($el);
 		this.accountsControl = new APP.AccountsControl($el, {});
@@ -40,12 +55,15 @@ APP.MainControl = can.Control({
 
 APP.AccountsControl = can.Control({
 	init: function (ele, options) {
+		console.log('AccountsControl init')
 		var self = this;
 
 		this.accounts = new APP.Account.List([]);
 		this.state = new can.Map({loading: true});
 
-		var viewArgs = {accounts: this.accounts, state: this.state};
+		// console.log(can.route.attr());
+
+		var viewArgs = {accounts: this.accounts, state: this.state, route: can.route};
 		var view = can.view('t-accounts', viewArgs);
 		ele.append(view);
 
@@ -57,7 +75,7 @@ APP.AccountsControl = can.Control({
 	},
 
 	showAccount: function (id) {
-		console.log('showAccount', id);
+		// console.log('showAccount', id);
 		$el = $('<div>');
 		$('.accounts-outlet', this.element).html($el);
 		var accountControl = new APP.AccountControl($el, {id: id});
@@ -159,7 +177,7 @@ can.fixture('GET /accounts/{id}', function (request, response) {
 });
 
 can.fixture('GET /accounts/{accountId}/transactions', function (request, response) {
-	console.log(request.data);
+	//console.log(request.data);
 	var accountId = +request.data.accountId;
 	return [{
 		id: 100,
