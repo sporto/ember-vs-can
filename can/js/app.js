@@ -1,5 +1,9 @@
 APP = {}
 
+Mustache.registerHelper('loader', function (compute, options) {
+	return "<span class='loader'><i class='fa fa-spinner fa-spin'></i></span>";
+});
+
 APP.MainControl = can.Control({
 	init: function (ele, options) {
 		var view = can.view('t-main', {});
@@ -39,13 +43,16 @@ APP.AccountsControl = can.Control({
 		var self = this;
 
 		this.accounts = new APP.Account.List([]);
+		this.state = new can.Map({loading: true});
 
-		var view = can.view('t-accounts', {accounts: this.accounts});
+		var viewArgs = {accounts: this.accounts, state: this.state};
+		var view = can.view('t-accounts', viewArgs);
 		ele.append(view);
 
 		// get list of accounts
 		APP.Account.findAll({}, function (accounts) {
 			self.accounts.replace(accounts);
+			self.state.attr('loading', false);
 		});
 	},
 
@@ -64,9 +71,10 @@ APP.AccountControl = can.Control({
 		// console.log('id', options.id);
 
 		this.account = new APP.Account({id: +options.id});
-		// console.log(this.account);
+		this.state = new can.Map({loading: true});
 
-		var view = can.view('t-account', {account: this.account});
+		var viewArgs = {account: this.account, state: this.state};
+		var view = can.view('t-account', viewArgs);
 		ele.append(view);
 
 		// console.log('findOne')
@@ -75,6 +83,7 @@ APP.AccountControl = can.Control({
 				// console.log(account);
 				self.account.attr(account.attr());
 				self.getAccountTransactions();
+				self.state.attr('loading', false);
 			});
 	},
 

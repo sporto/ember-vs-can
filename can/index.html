@@ -4,6 +4,7 @@
 		<meta charset="utf-8" />
 		<title>Can</title>
 		<link rel="stylesheet" href="../shared/css/lib/bootstrap.css" />
+		<link rel="stylesheet" href="../shared/css/lib/font-awesome.css" />
 	</head>
 	<body>
 
@@ -42,11 +43,15 @@
 			<hr />
 			<div class='col-sm-3'>
 				<div class='list-group'>
-					{{#each accounts}}
-						<a href="#!accounts/{{id}}" class="list-group-item">
-							{{label}}
-						</a>
-					{{/each}}
+					{{#if state.loading}}
+						{{&loader}}
+					{{else}}
+						{{#each accounts}}
+							<a href="#!accounts/{{id}}" class="list-group-item">
+								{{label}}
+							</a>
+						{{/each}}
+					{{/if}}
 				</div>
 			</div>
 			<div class='col-sm-9'>
@@ -67,29 +72,32 @@
 		<script type='text/x-mustache' id='t-account'>
 			<div class='row'>
 				<div class='col-sm-7'>
-					<h2>{{account.id}} {{account.label}}</h2>
-					<p>Balance: {{account.balance}}</p>
+					{{#if state.loading}}
+						{{&loader}}
+					{{else}}
+						<h2>{{account.id}} {{account.label}}</h2>
+						<p>Balance: {{account.balance}}</p>
 
-					<h3>Transactions ({{account.transactions.length}})</h3>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Credit</th>
-								<th>Debit</th>
-							</tr>
-						</thead>
-						<tbody>
-							{{#each account.transactions}}
+						<h3>Transactions ({{account.transactions.length}})</h3>
+						<table class="table">
+							<thead>
 								<tr>
-									<td>{{id}}</td>
-									<td>{{credit}}</td>
-									<td>{{debit}}</td>
+									<th>ID</th>
+									<th>Credit</th>
+									<th>Debit</th>
 								</tr>
-							{{/each}}
-						</tbody>
-					</table>
-
+							</thead>
+							<tbody>
+								{{#each account.transactions}}
+									<tr>
+										<td>{{id}}</td>
+										<td>{{credit}}</td>
+										<td>{{debit}}</td>
+									</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					{{/if}}
 				</div>
 			</div>
 		</script>
